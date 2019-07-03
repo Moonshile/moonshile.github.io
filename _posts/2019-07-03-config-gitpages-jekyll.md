@@ -1,0 +1,26 @@
+# Config Git Pages and Jekyll on Ubuntu 18.04 Windows App
+
+新建repo并且clone repo.
+
+在repo的根目录下添加文件`Gemfile`.
+```
+source 'https://rubygems.org'
+gem 'github-pages', group: :jekyll_plugins
+gem 'jekyll-feed'
+gem 'jekyll-seo-tag'
+gem 'jekyll-redirect-from'
+gem 'jekyll-include-cache'
+gem 'minima'
+```
+
+安装ruby以及其他依赖
+```
+sudo apt-get update
+sudo apt-get install ruby ruby-dev make g++ zlib1g-dev
+gem install bundler
+```
+
+执行以下命令. 不要使用root用户执行, 如果需要root权限, 在命令运行过程中会请求.
+```
+bundle install
+```
