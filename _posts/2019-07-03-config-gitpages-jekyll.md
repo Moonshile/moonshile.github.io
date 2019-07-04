@@ -25,6 +25,8 @@ sudo apt-get install ruby ruby-dev make g++ zlib1g-dev
 gem install bundler
 ```
 
+> `make`, `g++`, `zlib1g-dev`是运行`bundler install`安装的`Gemfile`列表中某些包的依赖项.
+
 执行以下命令. 不要使用root用户执行, 如果需要root权限, 在命令运行过程中会请求.
 ```
 bundle install
