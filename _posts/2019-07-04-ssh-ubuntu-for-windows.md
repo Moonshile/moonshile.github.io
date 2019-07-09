@@ -9,6 +9,7 @@ categories: blog
 sudo apt-get remove --purge openssh-server
 sudo apt-get install openssh-server
 # Change Port from 22 to 2222
+# Change ListenAddres to 0.0.0.0 if necessary
 sudo vi /etc/ssh/sshd_config
 sudo service ssh --full-restart
 ```
