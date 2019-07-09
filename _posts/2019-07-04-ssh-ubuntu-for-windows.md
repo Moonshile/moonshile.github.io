@@ -5,7 +5,7 @@ date:   2019-07-04 21:06:27 +0800
 categories: blog
 ---
 
-```
+```bash
 sudo apt-get remove --purge openssh-server
 sudo apt-get install openssh-server
 # Change Port from 22 to 2222
