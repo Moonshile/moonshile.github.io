@@ -5,6 +5,8 @@ date:   2019-07-03 22:24:27 +0800
 categories: blog
 ---
 
+## 初始化配置
+
 新建repo并且clone repo.
 
 在repo的根目录下添加文件`Gemfile`.
@@ -52,6 +54,55 @@ bundle exec jekyll serve
 
 + 如果你想在另一台机器上访问, 请加上开关`-H 0.0.0.0`
 + 如果你想使用其他端口, 请加上开关`-P <your port>`
+
+## 模板修改
+假设你使用了minima作为模板, 现在想自定义模板定义, 比如希望支持$$\LaTeX$$公式. 运行
+
+```bash
+bundle show minima
+```
+
+这时你可以看到minima模板的源代码路径以及文件目录组织结构.
+
+```
+├── LICENSE.txt
+├── README.md
+├── _includes
+│   ├── disqus_comments.html
+│   ├── footer.html
+│   ├── google-analytics.html
+│   ├── head.html
+│   ├── header.html
+│   ├── icon-github.html
+│   ├── icon-github.svg
+│   ├── icon-twitter.html
+│   ├── icon-twitter.svg
+│   └── social.html
+├── _layouts
+│   ├── default.html
+│   ├── home.html
+│   ├── page.html
+│   └── post.html
+├── _sass
+│   ├── minima
+│   │   ├── _base.scss
+│   │   ├── _layout.scss
+│   │   └── _syntax-highlighting.scss
+│   └── minima.scss
+└── assets
+    ├── main.scss
+    └── minima-social-icons.svg
+```
+
+查看`default.html`可以发现该文件包含了`head.html`, `header.html`和`footer.html`, 另外还渲染了`content`变量. 可见这是一个母版.
+
+将`head.html`按照相同的目录结构复制到你的repo中, 并添加以下一行
+
+```html
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+```
+
+这样你的博客就支持$$\LaTeX$$公式了, 使用方式是`$$\LaTeX$$`. 同时, 你也完成了模板修改的一个案例.
 
 ## TSG
 
