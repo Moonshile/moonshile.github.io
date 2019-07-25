@@ -113,3 +113,7 @@ Jekyll默认使用UTC时间. 如果一篇post中的front matter中的date字段�
 	```
 	date:   2019-07-03 22:24:27 +0800
 	```
+
+## 参考文献
+
+[LaTeX in Jekyll](http://www.iangoodfellow.com/blog/jekyll/markdown/tex/2016/11/07/latex-in-markdown.html)
