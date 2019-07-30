@@ -2,7 +2,7 @@
 layout: post
 title:  "Config Git Pages and Jekyll on Ubuntu 18.04 Windows App"
 date:   2019-07-03 22:24:27 +0800
-categories: blog
+categories: gitpages jekyll
 ---
 
 ## 初始化配置
