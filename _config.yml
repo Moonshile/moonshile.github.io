@@ -25,6 +25,7 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  Moonshile
 
 permalink: /:year/:month/:day/:title.html
+url: https://moonshile.github.io
 
 # Build settings
 markdown: kramdown

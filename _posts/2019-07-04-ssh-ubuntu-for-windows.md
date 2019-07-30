@@ -2,7 +2,8 @@
 layout: post
 title:  "ssh to ubuntu for windows"
 date:   2019-07-04 21:06:27 +0800
-categories: blog
+categories: ssh ubuntu
+author: Kaiqiang Duan
 ---
 
 ```bash

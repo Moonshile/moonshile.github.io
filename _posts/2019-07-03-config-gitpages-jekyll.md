@@ -3,6 +3,7 @@ layout: post
 title:  "Config Git Pages and Jekyll on Ubuntu 18.04 Windows App"
 date:   2019-07-03 22:24:27 +0800
 categories: gitpages jekyll
+author: Kaiqiang Duan
 ---
 
 ## 初始化配置
@@ -123,3 +124,4 @@ Jekyll 默认使用UTC时间. 如果一篇 post 中的 front matter 中的 date 
 
 1. [LaTeX in Jekyll](http://www.iangoodfellow.com/blog/jekyll/markdown/tex/2016/11/07/latex-in-markdown.html)
 1. [How to customize Jekyll's url?](https://stackoverflow.com/questions/8664675/how-to-customize-jekylls-url)
+1. [Permalinks - Jekyll](https://jekyllrb.com/docs/permalinks/)

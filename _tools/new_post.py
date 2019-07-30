@@ -22,6 +22,7 @@ def create(args):
                 'title:  "{}"\n'
                 'date:   {}\n'
                 'categories: ____TODO____\n'
+                'author: Kaiqiang Duan\n'
                 '---\n'.format(postname, timestr))
 
 def publish(args):
