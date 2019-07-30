@@ -56,7 +56,7 @@ bundle exec jekyll serve
 + 如果你想使用其他端口, 请加上开关`-P <your port>`
 
 ## 模板修改
-假设你使用了minima作为模板, 现在想自定义模板定义, 比如希望支持$$\LaTeX$$公式. 运行
+假设你使用了minima作为模板, 现在想自定义模板定义, 比如希望支持 $$\LaTeX$$ 公式. 运行
 
 ```bash
 bundle show minima
@@ -102,18 +102,24 @@ bundle show minima
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 ```
 
-这样你的博客就支持$$\LaTeX$$公式了, 使用方式是`$$\LaTeX$$`. 同时, 你也完成了模板修改的一个案例.
+这样你的博客就支持 $$\LaTeX$$ 公式了, 使用方式是`$$\LaTeX$$`. 同时, 你也完成了模板修改的一个案例.
 
 ## TSG
 
-Jekyll默认使用UTC时间. 如果一篇post中的front matter中的date字段使用了UTC+0800时间但未标注, 有可能被系统作为未来的时间看待而导致post不能被显示出来. 解决方法
+### 配置时区
+
+Jekyll 默认使用UTC时间. 如果一篇 post 中的 front matter 中的 date 字段使用了 UTC+0800 时间但未显式标注, 有可能被系统作为未来的时间看待而导致 post 不能被立即显示出来. 解决方法二选其一
 
 1. 在`_config.yml`中配置`future: true`
-2. 更合适的方案是就直接在front matter中date字段的最后显式加上`+0800`, 如
+2. 更合适的方案是就直接在 front matter 中 date 字段的最后显式加上`+0800`, 如
 	```
 	date:   2019-07-03 22:24:27 +0800
 	```
 
+### 去除 URL 中的 categories 信息
+在`_config.yml`中添加配置`permalink: /:year/:month/:day/:title.html`
+
 ## 参考文献
 
-[LaTeX in Jekyll](http://www.iangoodfellow.com/blog/jekyll/markdown/tex/2016/11/07/latex-in-markdown.html)
+1. [LaTeX in Jekyll](http://www.iangoodfellow.com/blog/jekyll/markdown/tex/2016/11/07/latex-in-markdown.html)
+1. [How to customize Jekyll's url?](https://stackoverflow.com/questions/8664675/how-to-customize-jekylls-url)
