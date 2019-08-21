@@ -122,12 +122,9 @@ function convVisualRun(container, input, filter, stride, dilation, reverse, inte
     var [inputCells, filterCells, outputCells] = convVisualRender(container, input, filter, output, reverse);
     var step = 0;
     return setInterval(function(){
-        var n = Math.sqrt(output.length);
         var inputSize = Math.sqrt(inputCells.length);
-        var i = Math.floor(step/n);
-        var j = step % n;
 
-        if(step > 0) {
+        if(step > 0 && step <= output.length) {
             var prevInds = inds[step - 1];
             for(var i = 0; i < prevInds.length; ++i){
                 var [x, y] = prevInds[i];
@@ -135,12 +132,12 @@ function convVisualRun(container, input, filter, stride, dilation, reverse, inte
             }
         }
 
-        if(step == output.length) {
+        if(step >= output.length) {
             for(var i = 0; i < outputCells.length; ++i) {
                 outputCells[i].style.color = 'transparent';
                 outputCells[i].style.backgroundColor = 'transparent';
             }
-        } else {
+        } else if (step < output.length) {
             var curInds = inds[step];
             for(var i = 0; i < curInds.length; ++i){
                 var [x, y] = curInds[i];
@@ -152,7 +149,7 @@ function convVisualRun(container, input, filter, stride, dilation, reverse, inte
         }
         
         step += 1;
-        if(step > output.length) {
+        if(step > output.length + 1) {
             step = 0;
         }
     }, interval, 0);
