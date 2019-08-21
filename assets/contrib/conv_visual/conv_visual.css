@@ -1,0 +1,26 @@
+.conv_visual table {
+    border-collapse: collapse;
+    float: left;
+    width: initial;
+}
+.conv_visual span {
+    display: block;
+    float: left;
+}
+.conv_visual table, .conv_visual td, .conv_visual span, .conv_visual div {
+    font-size: 20px;
+    font-family: Calibri;
+    text-align: center;
+    padding: initial;
+}
+.conv_visual td {
+    border: solid 1px black;
+    width: 30px;
+    height: 30px;
+}
+.conv_visual table.output-view td {
+    color: transparent;
+}
+.conv_visual .filter-view td {
+    background-color: rgb(244,177,131);
+}
