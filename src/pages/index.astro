@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Search from '../components/Search.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout>
+  <Search />
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`} class="post-list-title">
+            {post.data.title}
+          </a>
+          <p class="post-meta">
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            {post.data.tags.length > 0 && (
+              <span>
+                &middot;{' '}
+                {post.data.tags.map((tag) => (
+                  <a href={`/tags/${tag}`} class="tag">
+                    {tag}
+                  </a>
+                ))}
+              </span>
+            )}
+          </p>
+          {post.data.description && (
+            <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+              {post.data.description}
+            </p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

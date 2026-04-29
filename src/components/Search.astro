@@ -1,0 +1,37 @@
+---
+---
+
+<div id="search" class="search-container"></div>
+
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('search');
+    if (!el) return;
+
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/pagefind/pagefind-ui.css';
+    document.head.appendChild(link);
+
+    var script = document.createElement('script');
+    script.src = '/pagefind/pagefind-ui.js';
+    script.onload = function () {
+      new PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+        translations: {
+          placeholder: '搜索文章...',
+          zero_results: '没有找到相关结果',
+        },
+      });
+    };
+    document.head.appendChild(script);
+  });
+</script>
+
+<style>
+  .search-container {
+    margin-bottom: 1.5rem;
+  }
+</style>

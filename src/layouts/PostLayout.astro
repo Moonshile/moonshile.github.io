@@ -1,0 +1,63 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Comments from '../components/Comments.astro';
+import AdSense from '../components/AdSense.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  tags: string[];
+  author: string;
+  description?: string;
+}
+
+const { title, date, tags, author, description } = Astro.props;
+const formattedDate = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const siteUrl = 'https://moonshile.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  datePublished: date.toISOString(),
+  author: { '@type': 'Person', name: author },
+  url: canonicalUrl,
+  ...(description && { description }),
+  ...(tags.length > 0 && { keywords: tags.join(', ') }),
+};
+---
+
+<BaseLayout title={title} description={description} date={date} tags={tags} author={author} type="article">
+  <article data-pagefind-body>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <header class="post-header">
+      <h1 class="post-title">{title}</h1>
+      <p class="post-meta">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+        &middot; {author}
+      </p>
+      {
+        tags.length > 0 && (
+          <div style="margin-top: 0.5rem">
+            {tags.map((tag) => (
+              <a href={`/tags/${tag}`} class="tag">
+                {tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <div class="post-content">
+      <slot />
+    </div>
+
+    <AdSense slot="after-article" />
+    <Comments />
+  </article>
+</BaseLayout>

@@ -1,0 +1,111 @@
+---
+title: "卷积神经网络概要"
+date: 2019-08-14
+tags: ["深度学习", "卷积神经网络"]
+author: "Kaiqiang Duan"
+description: "卷积神经网络的原理、实现与反向传播过程"
+---
+
+## 为什么需要卷积
+
+卷积神经网络的爆红起源于其在图像领域的惊人威力.
+
+在卷积网络出现之前, 图像领域最大的问题在于特征提取, 那时候的特征提取主要依赖于人工设计的滤波器, 比如颜色直方图, 或者分块颜色直方图之类的. 然而图片的可变性太强, 比如同样是一只狗狗的照片, 如果发生平移, 旋转, 姿势, 光照等因素的变化, 照片上的像素就会发生大幅变化, 这就对人工设计的滤波器造成了极大的挑战, 因为一个固定的滤波器往往无法在所有的情况下都取得理想的特征, 而人工设计千千万万的适应各种场景的滤波器不具有可行性, 毕竟枚举所有潜在的场景就是个问题.
+
+另一种方案是设法自动生成图像特征. 而图像的特征这个概念, 意味着对于某个特定的任务, 需要考虑其中某些像素而忽略其他像素. 自然而然的想法就是给出一个权重集, 其中每个权重对应一个像素, 这样对所有像素加权求和就得到了一项特征, 只要确定一系列权重集, 就能完成特征提取. 实际上这时已经形成了一个多层感知机, 继续堆叠更多的层数, 我们可以期望更好的特征提取性能. 然而实践中并非如此, 考虑一张普通的 $500 \times 500$ 的照片, 如果设计一个简单的只需要一层的多层感知机, 提取 $10000$ 个特征, 那么总参数量是 $500 \times 500 \times 10000 = 2.5 \times 10 ^ 9$ 个参数. 可见即使对一个最简单的效果不会理想的单层网络来说, 参数已经意外地多了.
+
+而卷积网络的出现则解决了这个问题, 因为卷积网络有两个特性
++ **局部感受野**. 形象地说, 这样做模仿了你的眼睛. 你在看一只狗狗的时候, 目光是聚焦在一个很小的区域里吧? 如果你想要更多了解这只狗狗, 你的目光会上下左右移动大量它吧? 还是考虑那张 $500 \times 500$ 的照片, 如果每次只考虑一个  $10 \times 10$ 的小区域, 扫描整张图片总共需要考虑 $491 \times 491$ 个小区域, 这样参数总量就变成了 $ 10 \times 10 \times 491 \times 491 \approx 10 ^ 8 $ 个参数, 相比多层感知机已经减少了两个数量级, 而且这样就可以得到 $491 \times 491$ 个针对不同小区域的特征.
++ **权值共享**. 形象地说, 这模仿了人的大脑. 不论你看到了什么, 目光聚焦到了哪里, 你的大脑处理这些视觉信号的都是一个固定的皮层区域. 而在卷积网络中, 在扫描整张图片的所有小区域时, 用到的卷积核的权重是相同的. 也就是说, 对上边的例子, 真正需要的权重只有 $ 10 \times 10 = 100 $ 个!
+
+卷积网络的另一个特点是, 经过一次卷积操作后, 得到的依然是一个矩阵, 也就是说依然可以把它作为一张图片对待, 提取更高级的特征. 这样自然而然堆叠更多的层数就是有意义的了.
+
+## 卷积的实现
+
+二维图像的卷积操作的基本思路就是使用一个大小远比图像小的二维权重矩阵, 也即卷积核对整个图像从左到右, 从上到下进行扫描, 扫描中的每一步都对卷积核覆盖的图像区域中的像素做加权求和, 最终生成一个新的二维矩阵(称为feature map). 如果二维图像表示为 $ \mathbf X \in \mathbb R ^ {d \times d} $, 卷积核表示为 $ \mathbf \Theta \in \mathbb R ^ {k \times k} $, 那么这个卷积过程可以表示为
+
+$$
+(\mathbf X * \mathbf \Theta)_{i, j} = \sum_{m = i}^{i + k - 1} \sum_{n = j}^{j + k - 1} X _ {m, n} \Theta _ {m - i, n - j}
+$$
+
+可见, 对于一个普通的卷积操作, 如果其输入是 $ d \times d $ 的, 卷积核是 $ k \times k $ 的, 那么输出就是 $ (d - k + 1) \times (d - k + 1) $的. 下图为一个卷积的例子.
+
+<script src="/contrib/conv_visual/conv_visual.js"></script>
+<link rel="stylesheet" type="text/css" href="/contrib/conv_visual/conv_visual.css" />
+
+<div class="conv_visual conv1" style="width:100%"></div>
+<script>
+convVisualRun(document.querySelector('.conv1'),
+              [...Array(16).keys()].map(i => 1),
+              [...Array(9).keys()].map(i => 1),
+              1, 1, false, 900);
+</script>
+
+需要注意的是, 这里的卷积只是借用了数学中的卷积概念, 为了编程实现方便, 并不严格与卷积的数学定义一致. 数学上的离散二维卷积定义是
+
+$$
+(f * g)(i, j) = \sum_{m = -\infty}^{\infty} \sum_{n = -\infty}^{\infty} f(m, n) g(i - m, j - n)
+$$
+
+## 卷积网络的反向传播过程
+
+> BP的推导请移步[反向传播(BP)算法的推导](/posts/bp-algo)
+
+对一个卷积操作 $ \mathbf X * \mathbf \Theta = \mathbf O $, 如果 $ \mathbf X \in \mathbb R ^ {d \times d}, \mathbf \Theta \in \mathbb R ^ {k \times k}, \mathbf O \in \mathbb R ^ {(d - k + 1) \times (d - k + 1)} $, 其从后继层中得到的残差为 $ \mathbf \Delta = \sum_i \mathbf \Delta_{(i)}$, 则必然满足 $\mathbf \Delta, \mathbf \Delta_{(i)} \in \mathbb R ^ {(d - k + 1) \times (d - k + 1)} $.
+
+那么该如何计算损失函数对这个卷积操作中的参数的梯度呢?
+
+因为在卷积操作的扫描过程中, 卷积核中的参数是共享的, 也就是说每个参数对输出的贡献是有多次的, 即对输出 feature map 中的每个点都有贡献. 根据[反向传播(BP)算法的推导](/posts/bp-algo)中的结论, 这属于复合函数的链式求导的情形, 其结果是应该叠加在一起的.
+
+如果将输出 $ \mathbf \Delta $ 的四周填 $ 0 $, 记为 $ \mathbf \Delta ^ \sharp \in \mathbb R ^ {(d + k - 1) \times (d + k - 1)} $, 则损失函数对卷积操作中的参数的梯度为
+
+$$
+\nabla_{\mathbf \Theta} J = \mathbf \Delta ^ \sharp * \mathbf X \in \mathbb R ^ {k \times k}
+$$
+
+<div class="conv_visual conv2" style="width:100%"></div>
+<script>
+convVisualRun(document.querySelector('.conv2'),
+              convVisualPad([...Array(4).keys()].map(i => 0.1), 2),
+              [...Array(16).keys()].map(i => 1),
+              1, 1, true, 400);
+</script>
+
+同理, 这个卷积操作传递给上一层的残差是
+
+$$
+\nabla_{\mathbf X} J = \mathbf \Delta ^ \sharp * \mathbf \Theta \in \mathbb R ^ {d \times d}
+$$
+
+<div class="conv_visual conv3" style="width:100%"></div>
+<script>
+convVisualRun(document.querySelector('.conv3'),
+              convVisualPad([...Array(4).keys()].map(i => 0.1), 2),
+              [...Array(9).keys()].map(i => 1),
+              1, 1, true, 225);
+</script>
+
+## 常见的卷积操作的超参数
+
+**步长(stride)**. 一般为1, 即扫描 feature map 的时候以1个像素为单位向右向下进行扫描. 下图是一个步长为2的例子.
+
+<div class="conv_visual conv4" style="width:100%"></div>
+<script>
+convVisualRun(document.querySelector('.conv4'),
+              [...Array(25).keys()].map(i => 1),
+              [...Array(9).keys()].map(i => 1),
+              2, 1, false, 900);
+</script>
+
+**膨胀(dilation)**. 一般为1, 即卷积核相邻的元素所对应的 feature map 的像素的索引之差为1. 下图是一个膨胀为2的例子.
+
+<div class="conv_visual conv5" style="width:100%"></div>
+<script>
+convVisualRun(document.querySelector('.conv5'),
+              [...Array(36).keys()].map(i => (Math.floor(i/6) + i%6)%2),
+              [...Array(9).keys()].map(i => 1),
+              1, 2, false, 900);
+</script>
+
+## 参考文献
+1. [反向传播(BP)算法的推导](/posts/bp-algo)
