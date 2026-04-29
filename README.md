@@ -93,109 +93,15 @@ moonshile.github.io/
         └── deploy.yml          # GitHub Actions 部署
 ```
 
-## 四、数据迁移方案
+## 四、功能清单
 
-### 4.1 迁移范围
-
-现有 Jekyll 博客包含以下需迁移的内容：
-
-| 类型 | 数量 | 说明 |
-|---|---|---|
-| 博文 | 5 篇 | 2019 年，中英双语 |
-| 图片资源 | 2 张 | `assets/post/forward.png`, `backward.png` |
-| 自定义 JS/CSS | 1 组 | `conv_visual.js/css`（CNN 文章的卷积可视化） |
-| 数学公式 | 2 篇 | BP-Algo（35 处）、CNN（15 处）使用 `$$...$$` LaTeX |
-
-### 4.2 Front Matter 转换
-
-Jekyll 格式：
-```yaml
----
-layout: post
-title:  "反向传播(BP)算法的推导"
-date:   2019-07-24 20:22:52+0800
-categories: 深度学习 反向传播
-author: Kaiqiang Duan
----
-```
-
-Astro 格式：
-```yaml
----
-title: "反向传播(BP)算法的推导"
-date: 2019-07-24
-tags: ["深度学习", "反向传播"]
-author: "Kaiqiang Duan"
-description: "神经网络反向传播算法的数学推导"
----
-```
-
-**转换规则**：
-- 移除 `layout` — 由 Astro Content Collections 统一管理
-- `categories` → `tags` — 语义更明确，改为数组格式
-- `date` — 简化为 `YYYY-MM-DD`，时区由 Astro 配置统一处理
-- 新增 `description` — 用于 SEO 和文章列表摘要
-
-### 4.3 数学公式迁移
-
-- 现有博文使用 `$$...$$` 语法（MathJax）
-- Astro 中通过 `remark-math` + `rehype-katex` 插件原生支持，**语法完全兼容**，无需修改正文
-- KaTeX 渲染速度比 MathJax 快约 100 倍，且体积更小
-
-### 4.4 图片路径迁移
-
-| 原路径 | 新路径 |
-|---|---|
-| `/assets/post/forward.png` | `/images/post/forward.png` |
-| `/assets/post/backward.png` | `/images/post/backward.png` |
-
-博文中的引用路径需同步更新：
-```diff
-- [forward]: /assets/post/forward.png
-+ [forward]: /images/post/forward.png
-```
-
-### 4.5 自定义 JS/CSS 迁移（CNN 文章卷积可视化）
-
-CNN 文章中内嵌了 `conv_visual.js` 和 `conv_visual.css`，两种迁移方式：
-
-- **方案 A（推荐）**：将该文章转为 MDX，卷积可视化封装为 Astro 岛屿组件 `<ConvVisual client:visible />`，仅在该文章中按需加载
-- **方案 B**：保持 JS/CSS 放在 `public/contrib/` 下作为静态资源，在文章 layout 中条件加载
-
-### 4.6 URL 兼容（可选）
-
-旧 URL 格式：`/2019/07/24/BP-Algo.html`
-新 URL 格式：`/posts/bp-algo/`（Astro 默认 slug）
-
-如需保持旧 URL 可访问，可通过以下方式：
-- Astro 的 `getStaticPaths()` 生成旧路径重定向
-- 或在 `public/_redirects` 中配置（Cloudflare Pages 支持）
-- 由于原博客流量较小且年代久远，**建议不做旧 URL 兼容**，直接使用新 URL
-
-### 4.7 迁移清单
-
-- [ ] 初始化 Astro 项目，配置 Content Collections schema
-- [ ] 迁移 5 篇博文，转换 front matter
-- [ ] 迁移图片资源到 `public/images/post/`
-- [ ] 更新博文中的图片引用路径
-- [ ] 配置 remark-math + rehype-katex，验证数学公式渲染
-- [ ] 将 CNN 文章卷积可视化封装为 Astro 组件（或 MDX）
-- [ ] 配置 GitHub Actions 部署到 GitHub Pages
-- [ ] 集成 Pagefind 搜索
-- [ ] 集成 Giscus 评论
-- [ ] 集成 Cloudflare Web Analytics
-- [ ] 添加加载耗时显示
-- [ ] 生成 llms.txt
-- [ ] SEO 优化（sitemap、RSS、Open Graph、JSON-LD）
-- [ ] 预留 AdSense 广告位
-
-## 五、实施阶段
-
-### Phase 1：基础搭建
-初始化 Astro 项目，完成基本布局（首页、文章页、关于页、标签页），迁移全部 5 篇博文及资源，配置数学公式渲染，部署到 GitHub Pages。
-
-### Phase 2：功能集成
-集成 Pagefind 搜索、Giscus 评论、Cloudflare Web Analytics、加载耗时显示。
-
-### Phase 3：优化增强
-SEO 优化、llms.txt 生成、AdSense 广告位、样式美化调优。
+- [x] Astro 6.x + Content Collections
+- [x] 数学公式渲染（remark-math + rehype-katex）
+- [x] GitHub Actions 自动部署
+- [x] Pagefind 全文搜索
+- [x] Giscus 评论
+- [x] Cloudflare Web Analytics
+- [x] 页面加载耗时显示
+- [x] llms.txt / llms-full.txt
+- [x] SEO（sitemap、RSS、Open Graph、JSON-LD）
+- [x] AdSense 广告位预留
