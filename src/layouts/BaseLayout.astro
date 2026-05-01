@@ -87,12 +87,14 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 
     <script is:inline>
       window.addEventListener('load', function () {
-        var timing = performance.getEntriesByType('navigation')[0];
-        if (timing) {
-          var ms = Math.round(timing.loadEventEnd - timing.startTime);
-          document.getElementById('load-time').textContent =
-            '页面加载耗时 ' + ms + 'ms';
-        }
+        setTimeout(function () {
+          var timing = performance.getEntriesByType('navigation')[0];
+          if (timing) {
+            var ms = Math.round(timing.loadEventEnd - timing.startTime);
+            document.getElementById('load-time').textContent =
+              '页面加载耗时 ' + ms + 'ms';
+          }
+        }, 0);
       });
     </script>
 
