@@ -623,6 +623,37 @@ main {
   letter-spacing: 0.02em;
 }
 
+/* ---- Conv Visual Override ---- */
+.post-content .conv_visual table {
+  border-collapse: collapse;
+  float: left;
+  width: initial;
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+.post-content .conv_visual td {
+  border: solid 1px black;
+  width: 30px;
+  height: 30px;
+  padding: initial;
+  text-align: center;
+  background: transparent;
+  font-size: 20px;
+  font-family: Calibri, sans-serif;
+}
+
+.post-content .conv_visual th {
+  background: transparent;
+  border: none;
+  padding: initial;
+}
+
+.post-content .conv_visual {
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
 /* ---- KaTeX ---- */
 .katex-display {
   overflow-x: auto;
