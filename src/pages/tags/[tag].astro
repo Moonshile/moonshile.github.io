@@ -22,7 +22,7 @@ const { tag, posts } = Astro.props;
 ---
 
 <BaseLayout title={`标签: ${tag}`}>
-  <h1 class="post-title" style="margin-bottom: 1.5rem">标签: {tag}</h1>
+  <h1 class="page-title">标签: {tag}</h1>
   <ul class="post-list">
     {
       posts.map((post) => (

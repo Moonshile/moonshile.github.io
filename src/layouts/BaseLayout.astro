@@ -1,4 +1,6 @@
 ---
+import Search from '../components/Search.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -36,6 +38,12 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
@@ -49,7 +57,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       title={siteTitle}
       href="/rss.xml"
     />
-    <style>
+    <style is:global>
       @import '../styles/global.css';
     </style>
   </head>
@@ -61,6 +69,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
           <a href="/">首页</a>
           <a href="/tags">标签</a>
           <a href="/about">关于</a>
+          <Search />
         </nav>
       </div>
     </header>

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Search from '../components/Search.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('posts'))
@@ -9,7 +8,6 @@ const posts = (await getCollection('posts'))
 ---
 
 <BaseLayout>
-  <Search />
   <ul class="post-list">
     {
       posts.map((post) => (
@@ -37,7 +35,7 @@ const posts = (await getCollection('posts'))
             )}
           </p>
           {post.data.description && (
-            <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+            <p class="post-description">
               {post.data.description}
             </p>
           )}
