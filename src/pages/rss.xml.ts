@@ -8,8 +8,8 @@ export async function GET(context: APIContext) {
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
-    title: '凯强的百草园',
-    description: '悟已往之不谏 知来者之可追',
+    title: '凯强的blog',
+    description: '',
     site: context.site!,
     items: posts.map((post) => ({
       title: post.data.title,

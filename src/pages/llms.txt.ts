@@ -9,9 +9,7 @@ export async function GET(context: APIContext) {
   const siteUrl = context.site!.href.replace(/\/$/, '');
 
   const lines = [
-    '# 凯强的百草园',
-    '',
-    '> 悟已往之不谏 知来者之可追',
+    '# 凯强的blog',
     '',
     '个人技术博客，内容涵盖深度学习、Git、Linux 等领域。',
     '',

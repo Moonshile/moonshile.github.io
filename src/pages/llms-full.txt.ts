@@ -23,9 +23,7 @@ export async function GET(context: APIContext) {
 
   const siteUrl = context.site!.href.replace(/\/$/, '');
   const sections: string[] = [
-    '# 凯强的百草园 — 完整内容',
-    '',
-    '> 悟已往之不谏 知来者之可追',
+    '# 凯强的blog — 完整内容',
     '',
   ];
 

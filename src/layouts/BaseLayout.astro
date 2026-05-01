@@ -11,8 +11,8 @@ interface Props {
 }
 
 const { title, description, date, tags, author, type = 'website' } = Astro.props;
-const siteTitle = '凯强的百草园';
-const siteDescription = '悟已往之不谏 知来者之可追';
+const siteTitle = '凯强的blog';
+const siteDescription = '';
 const siteUrl = 'https://moonshile.github.io';
 const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const pageDescription = description || siteDescription;
@@ -74,7 +74,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       </div>
     </header>
 
-    <p class="site-description">{siteDescription}</p>
+    {siteDescription && <p class="site-description">{siteDescription}</p>}
 
     <main>
       <slot />
